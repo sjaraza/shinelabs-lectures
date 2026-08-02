@@ -78,3 +78,17 @@ already through.
 - `Esc` for the slide overview, `F` for fullscreen
 - Arrow keys: left/right moves between segments, up/down within a segment
 - Works fully offline; reveal.js is vendored in `vendor/reveal.js`
+
+## Repo notes (instructor)
+
+Kept here rather than in the README, which students read.
+
+- **Offline by design.** reveal.js 6.0.1 is vendored in `vendor/reveal.js`
+  (`dist/` only — built plugins live at `dist/plugin/`, and the source `plugin/`
+  tree was removed as it contains only TypeScript). No CDN links, no web fonts.
+- **No credentials, ever.** This repo is public. Wi-Fi passwords go on the board.
+  No student names, no photographs of minors.
+- **Placeholders render as loud amber boxes** so an unfilled slot is obvious in
+  rehearsal rather than on the day. Grep for `placeholder` to find them all.
+- **Print to PDF** by appending `?print-pdf` to a deck URL, then print from the
+  browser.
