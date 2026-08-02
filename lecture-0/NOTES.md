@@ -3,36 +3,57 @@
 90 minutes, 20 students, one robot and one laptop each. Deliberately
 hands-on: the slides are a spine, not the content.
 
+Students image their own SD cards in this session, which is the single longest
+segment. Timings below reflect that.
+
 | Time | Segment | Mode | Ends with |
 |---|---|---|---|
 | 0:00–0:08 | Welcome, intro, series arc, Slack | slides | everyone in Slack |
-| 0:08–0:20 | Meet the hardware | robot in hand | can point at each part |
-| 0:20–0:28 | Network + imaging demo | projector only | — |
-| 0:28–0:45 | First contact: power on, SSH in | hands-on | **Checkpoint 1** — prompt says `ali@robotN` |
-| 0:45–0:55 | Run the setup script | hands-on | **Checkpoint 2** — script prints `READY` |
-| 0:55–1:02 | Dashboard: clone, run, connect | hands-on | **Checkpoint 3** — battery + distance live |
-| 1:02–1:12 | Drive it | hands-on, on the floor | **Checkpoint 4** — forward, turn, return, stop |
-| 1:12–1:20 | Aim camera, capture | hands-on | **Checkpoint 5** — a photo on screen |
-| 1:20–1:30 | Battery care, pack down, next time | slides | batteries collected |
+| 0:08–0:18 | Meet the hardware — "how many sensors can you find?" | robot in hand | can point at each part |
+| 0:18–0:24 | The robot network + label your robot | slides + stickers | every robot labelled |
+| 0:24–0:50 | **Image the SD card** and boot | hands-on | **CP1** — `ping robotN.local` replies |
+| 0:50–0:58 | SSH in | hands-on | **CP2** — prompt is `you@robotN` |
+| 0:58–1:08 | Run the setup script | hands-on | **CP3** — script prints `READY` |
+| 1:08–1:16 | Dashboard: clone, run, connect | hands-on | **CP4** — battery + distance live |
+| 1:16–1:24 | Drive it | hands-on, on the floor | **CP5** — forward, turn, return, stop |
+| 1:24–1:28 | Aim camera, capture | hands-on | **CP6** — a photo on screen |
+| 1:28–1:30 | Battery care, pack down, next time | slides | batteries collected |
 
 Checkpoints exist so the room can be scanned at a glance. Don't move on until
 most of the room is at the same place; park stragglers with a neighbour who is
 already through.
 
+⚠️ **Imaging is the long pole and it will overrun for someone.** If you are past
+1:20 and still fighting cards, cut CP5 and CP6 and open lecture 1 with driving —
+what matters is that every robot is built, imaged and reachable. Do not cut the
+battery-care slide.
+
 ## Before the session
+
+**Materials — students image their own cards, so each student needs:**
+
+- [ ] microSD card, **16 GB or larger**
+- [ ] a **card reader** — many laptops have no SD slot, and this is the item
+      most likely to be forgotten
+- [ ] **Raspberry Pi Imager already installed** on their laptop. Ask them to do
+      this before arriving: it is a ~150 MB download, and twenty of them at once
+      over one uplink is a slow start to the session.
+- [ ] a sticker and a marker, for labelling the robot
+- [ ] 2–3 **spare pre-imaged cards** in your bag, for cards that fail or
+      students who get hopelessly stuck
+
+**Setup:**
 
 - [ ] Router: **Smart Connect off**, separate SSIDs — robots on 2.4 GHz
       (`ShineLabs`), laptops on 5 GHz. A Pi Zero 2 W is 2.4 GHz only, and 40
       clients on one band will hurt.
-- [ ] All 20 cards imaged, each with a **unique hostname** (`robot0`…`robot19`)
-      so `robotN.local` resolves
-- [ ] Every robot **physically labelled** with its hostname. Without this,
-      twenty students spend ten minutes working out which robot is theirs.
+- [ ] Robot numbers assigned per student — hand them out rather than letting
+      students pick, or you will get two `robot0`s
 - [ ] Batteries charged. Two LEDs lit on every pack before students arrive.
 - [ ] Two or three spare charged packs within reach
 - [ ] Gateway laptop up, `./scripts/status.sh` reports READY (see `slab-gw`)
-- [ ] Wi-Fi passwords written on the board — **not** on a slide, since the deck
-      is in a public repo
+- [ ] Wi-Fi name and password written on the board — **not** on a slide, since
+      the deck is in a public repo. Students type these into Imager.
 - [ ] Slack QR scans from the back of the room (test it on the projector, not
       just on screen)
 - [ ] Rehearse once end-to-end on one robot; every placeholder filled
@@ -42,8 +63,6 @@ already through.
 | File / slide | What's needed |
 |---|---|
 | "Introduction" slide | instructor bio |
-| `assets/robot-annotated.png` | annotated photo of the assembled PiCar-X |
-| `assets/imager-customise.png` | screenshot of Imager's OS-customisation dialogue |
 | `assets/dashboard.png` | screenshot of the finished dashboard |
 | 5 GHz SSID | laptop network name |
 | Setup script command | once the provisioning script exists |
@@ -53,9 +72,13 @@ already through.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `ping robotN.local` fails | robot not booted, or not on Wi-Fi | wait 40 s; check the HAT power switch |
+| Imager never showed a customisation step | they clicked SKIP CUSTOMISATION | rewrite the card — without it there is no hostname, no Wi-Fi and no SSH |
+| `ping robotN.local` fails | wrong Wi-Fi details entered in Imager | check hostname spelling first, then rewrite the card |
+| First boot seems to hang | filesystem expansion + Wi-Fi join | give it two minutes before declaring it broken |
+| `ssh` asks for a password they don't know | they forgot what they typed in Imager | this is why the slide says write it down; otherwise rewrite the card |
+| `ssh` refuses with a host-key warning | card rewritten, same hostname | on their laptop: `ssh-keygen -R robotN.local` |
+| Two students both chose `robot0` | numbers not handed out | rename one: `sudo hostnamectl set-hostname robotN`, reboot |
 | Robot boots then dies | flat pack | swap to a spare, hand the flat one in |
-| SSH asks for a password students don't have | wrong user | it is `ali@`, not their own name |
 | Servos twitch on first connect | `Picarx()` centres them on init | expected, not a fault |
 | Robot pulls to one side when driving | uncalibrated | expected — it's lecture 1's opening problem |
 | Distance reads `-1` | no echo returned | expected. This is the teaching moment, not a bug |
@@ -66,11 +89,9 @@ already through.
 - **How the network is built.** Not today's lesson, and it invites tangents.
   "There is a network, here's how you join" is enough.
 - **Calibration.** Deferred to lecture 1, where a crooked-driving robot is a
-  motivated problem rather than a chore. Also saves ~15 minutes here.
+  motivated problem rather than a chore.
 - **Live video.** A single still on demand instead — an honest trade-off on a
   512 MB board, and worth explaining as one.
-- **Imaging as an activity.** Demoed only. Twenty students imaging cards live
-  would consume the session.
 
 ## Presenting
 
@@ -86,6 +107,8 @@ Kept here rather than in the README, which students read.
 - **Offline by design.** reveal.js 6.0.1 is vendored in `vendor/reveal.js`
   (`dist/` only — built plugins live at `dist/plugin/`, and the source `plugin/`
   tree was removed as it contains only TypeScript). No CDN links, no web fonts.
+- **`.nojekyll`** is present so GitHub Pages serves the tree verbatim rather than
+  running it through Jekyll.
 - **No credentials, ever.** This repo is public. Wi-Fi passwords go on the board.
   No student names, no photographs of minors.
 - **Turn off Slack invites after lecture 0.** `assets/slack-qr.png` encodes a

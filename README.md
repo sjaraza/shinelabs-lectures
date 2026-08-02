@@ -3,20 +3,19 @@
 Slides for our four-part robotics series. Everything we cover in class is here,
 so you can go back over it later.
 
-## Open the slides
+## The lectures
 
-Download or clone this repo, then open **`index.html`** in your browser.
+| | | |
+|---|---|---|
+| **Lecture 0** | Getting Started — Hello World | [**open the slides →**](https://sjaraza.github.io/shinelabs-lectures/lecture-0/) |
+| **Lecture 1** | Sensors and Decisions | *coming soon* |
+| **Lecture 2** | Seeing | *coming soon* |
+| **Lecture 3** | Autonomy | *coming soon* |
 
-That's it — no installing anything. It works without internet too.
+Or [**start from the beginning**](https://sjaraza.github.io/shinelabs-lectures/).
 
-| | |
-|---|---|
-| **Lecture 0** | Getting to Know Your Robot |
-| **Lecture 1** | Sensors and Decisions |
-| **Lecture 2** | Seeing |
-| **Lecture 3** | Autonomy |
-
-Only Lecture 0 is here so far. The others appear as we go.
+Prefer them offline? Download this repo and open `index.html` — it works with no
+internet at all.
 
 ## Moving around a deck
 
