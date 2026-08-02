@@ -551,6 +551,78 @@ zoomer
 </section>
 
 <!-- ==================================================================== -->
+<!-- Quick taste from the robot itself                                     -->
+<!-- ==================================================================== -->
+
+<section>
+  <h2>Make it move, right now</h2>
+  <p class="muted" style="font-size:0.8em">
+    Still on the robot. No laptop program needed yet.
+  </p>
+  <pre class="cmd"><code data-trim data-noescape><span class="p"></span>python3 ~/robot_play.py</code></pre>
+  <div class="cols" style="margin-top:0.5em">
+    <div>
+      <table class="spec">
+        <tr><td><code>1</code></td><td>read the distance sensor</td></tr>
+        <tr><td><code>3</code></td><td>battery and temperature</td></tr>
+        <tr><td><code>5</code></td><td>turn the front wheels</td></tr>
+        <tr><td><code>7</code></td><td>take a photo</td></tr>
+        <tr><td><code>8</code></td><td>see your photos in a browser</td></tr>
+        <tr><td><code>9</code></td><td>drive it with <strong>W A S D</strong></td></tr>
+      </table>
+    </div>
+    <div>
+      <p class="muted" style="font-size:0.76em">
+        Try <strong>1</strong> and wave your hand in front of the sensor.
+        Then cover it completely.
+      </p>
+      <p class="muted" style="font-size:0.76em">
+        Every option shows you the Python it runs:
+      </p>
+      <pre class="cmd" style="font-size:0.55em"><code data-trim data-noescape>&gt;&gt;&gt; px.forward(50)
+&gt;&gt;&gt; time.sleep(1.0)
+&gt;&gt;&gt; px.stop()</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    Two minutes, and the first thing to cut if you are behind — but worth doing,
+    because it is the shortest path from "I typed a command" to "the robot moved",
+    and it proves the hardware works before any laptop software is involved.
+
+    Option 1 with a hand in front of the sensor, then covering it completely, is
+    the best thirty seconds in the session: they discover the -1 themselves.
+
+    Option 10 shows their calibration as all zeros, which is exactly why the robot
+    pulls to one side — that is lecture 1's opening problem, handed to them.
+
+    It is also the fallback: if a student's laptop will not run the console, they
+    can still do everything from here.
+  </aside>
+</section>
+
+<section>
+  <h3>Seeing your photos</h3>
+  <p class="muted" style="font-size:0.82em">
+    The robot has no screen. So it hands the photos to your browser instead.
+  </p>
+  <p class="muted" style="font-size:0.78em">Pick <strong>8</strong>, then open the link it prints:</p>
+  <pre class="cmd"><code data-trim data-noescape>http://zoomer.local:8000/</code></pre>
+  <p class="muted" style="font-size:0.74em">
+    Your robot just became a web server. That is one line of Python:
+  </p>
+  <pre class="cmd" style="font-size:0.6em"><code data-trim data-noescape><span class="p"></span>python3 -m http.server 8000 --directory ~/photos</code></pre>
+  <aside class="notes">
+    Worth pausing on. Students are often surprised that serving a website is one
+    command, and it reframes "server" from something mysterious into a program
+    that hands out files.
+
+    The link only works while the command is running — Ctrl-C stops it. Anyone on
+    the class network can see those photos meanwhile, which is a reasonable moment
+    to mention that a server is open to whoever can reach it.
+  </aside>
+</section>
+
+<!-- ==================================================================== -->
 <!-- 0:45 – 1:02   Dashboard                                               -->
 <!-- ==================================================================== -->
 
@@ -678,9 +750,17 @@ zoomer
     <li>Leave the SD card in the robot</li>
     <li>Post your photo in Slack</li>
   </ul>
+  <p class="muted" style="font-size:0.78em; margin-top:0.6em">
+    Want to keep playing? <code class="inline">python3 ~/robot_play.py</code> works
+    any time your robot is on &mdash; and <code class="inline">less ~/robot_play.py</code>
+    shows you how all of it is done.
+  </p>
   <aside class="notes">
     Collect batteries yourself rather than trusting twenty teenagers to
     remember. Charging happens between sessions.
+
+    Pointing them at the playground for home is worth doing: the keen ones will
+    read the file, and it is short enough to be readable.
   </aside>
 </section>
 

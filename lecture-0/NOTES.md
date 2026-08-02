@@ -16,9 +16,10 @@ didn't — that is what the 0:24 block is for.
 | 0:34–0:40 | Terminal + SSH client on the laptop | hands-on | `ssh -V` prints a version |
 | 0:40–0:48 | SSH in | hands-on | **CP2** — prompt is `you@<name>` |
 | 0:48–0:58 | Run the setup script | hands-on | **CP3** — script prints `READY` |
-| 0:58–1:08 | Dashboard: clone, run, connect | hands-on | **CP4** — battery + distance live |
-| 1:08–1:18 | Drive it | hands-on, on the floor | **CP5** — forward, turn, return, stop |
-| 1:18–1:25 | Aim camera, capture | hands-on | **CP6** — a photo on screen |
+| 0:58–1:03 | `robot_play.py` — make it move from the robot | hands-on | a robot that moved, and someone who found the `-1` |
+| 1:03–1:11 | Dashboard: clone, run, connect | hands-on | **CP4** — battery + distance live |
+| 1:11–1:19 | Drive it | hands-on, on the floor | **CP5** — forward, turn, return, stop |
+| 1:19–1:25 | Aim camera, capture | hands-on | **CP6** — a photo on screen |
 | 1:25–1:30 | Battery care, pack down, next time | slides | batteries collected |
 
 Checkpoints exist so the room can be scanned at a glance. Don't move on until
@@ -27,9 +28,16 @@ already through.
 
 ⚠️ **If several students arrive without an imaged card, the 0:24 block will
 overrun.** Hand those students a spare pre-imaged card rather than letting the
-room wait — the point of today is a working robot, not the imaging exercise. If
-you are past 1:15 and still catching up, cut CP5 and CP6 and open lecture 1 with
-driving. Do not cut the battery-care slide.
+room wait — the point of today is a working robot, not the imaging exercise.
+
+**Cut in this order if you are behind:** the `robot_play.py` segment first (5 min,
+slides 21–22), then CP6 (camera), then CP5 (driving) — opening lecture 1 with
+driving is no loss. Never cut the battery-care slide.
+
+`robot_play.py` earns its five minutes when it fits, though: it is the shortest
+path from "I typed a command" to "the robot moved", it proves the hardware before
+any laptop software is involved, and it is the fallback for any student whose
+laptop will not run the console.
 
 ## Before the session
 
@@ -75,6 +83,7 @@ driving. Do not cut the battery-care slide.
 |---|---|
 | "Introduction" slide | instructor bio |
 | `assets/dashboard.png` | screenshot of the finished dashboard |
+| slide 21 | option numbers are from `robot_play.py` — re-check if that menu changes |
 | 5 GHz SSID | laptop network name |
 *(the setup-script and console commands are now filled in)*
 
