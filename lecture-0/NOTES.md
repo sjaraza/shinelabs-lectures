@@ -33,7 +33,8 @@ already through.
 - [ ] Gateway laptop up, `./scripts/status.sh` reports READY (see `slab-gw`)
 - [ ] Wi-Fi passwords written on the board — **not** on a slide, since the deck
       is in a public repo
-- [ ] Slack QR code dropped in at `assets/slack-qr.png`
+- [ ] Slack QR scans from the back of the room (test it on the projector, not
+      just on screen)
 - [ ] Rehearse once end-to-end on one robot; every placeholder filled
 
 ## Placeholders still to fill
@@ -41,7 +42,6 @@ already through.
 | File / slide | What's needed |
 |---|---|
 | "Introduction" slide | instructor bio |
-| `assets/slack-qr.png` | Slack workspace QR |
 | `assets/robot-annotated.png` | annotated photo of the assembled PiCar-X |
 | `assets/imager-customise.png` | screenshot of Imager's OS-customisation dialogue |
 | `assets/dashboard.png` | screenshot of the finished dashboard |
@@ -88,6 +88,11 @@ Kept here rather than in the README, which students read.
   tree was removed as it contains only TypeScript). No CDN links, no web fonts.
 - **No credentials, ever.** This repo is public. Wi-Fi passwords go on the board.
   No student names, no photographs of minors.
+- **Rotate the Slack invite when the series ends.** `assets/slack-qr.png`
+  encodes a shared-invite URL and this repo is public, so the link is
+  scrapeable — a QR is trivially decodable and offers no protection. Slack →
+  Manage members → invite links → revoke and regenerate. Do the same if the
+  deck is ever published via GitHub Pages, which makes it a public web page.
 - **Placeholders render as loud amber boxes** so an unfilled slot is obvious in
   rehearsal rather than on the day. Grep for `placeholder` to find them all.
 - **Print to PDF** by appending `?print-pdf` to a deck URL, then print from the
