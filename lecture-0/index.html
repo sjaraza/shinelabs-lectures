@@ -508,8 +508,17 @@ zoomer
 
 <section>
   <h2>Set up the robot's software</h2>
-  <p class="muted" style="font-size:0.82em">One script. Run it on the robot, over SSH.</p>
-  <pre class="cmd"><code data-trim data-noescape><span class="p"></span>PLACEHOLDER &mdash; setup script command</code></pre>
+  <p class="muted" style="font-size:0.82em">
+    Run these <strong>on the robot</strong> &mdash; in the window where your prompt
+    says <code class="inline">yourname@zoomer</code>.
+  </p>
+  <pre class="cmd"><code data-trim data-noescape><span class="p"></span>curl -O https://raw.githubusercontent.com/sjaraza/shinelabs-robot-dashboard/main/setup.sh
+<span class="p"></span>less setup.sh
+<span class="p"></span>bash setup.sh</code></pre>
+  <p class="muted" style="font-size:0.72em">
+    <code class="inline">less</code> shows you the script; press <code class="inline">q</code> to quit it.
+    Read what you are about to run &mdash; it uses <code class="inline">sudo</code>.
+  </p>
   <div class="checkpoint">
     <strong>Checkpoint 3</strong>
     The script finishes with <code class="inline">READY</code> and a summary. Show me your screen.
@@ -560,8 +569,16 @@ zoomer
 
 <section>
   <h3>Get it and run it</h3>
-  <pre class="cmd"><code data-trim data-noescape><span class="p"></span>PLACEHOLDER &mdash; clone command</code></pre>
-  <pre class="cmd"><code data-trim data-noescape><span class="p"></span>PLACEHOLDER &mdash; run command</code></pre>
+  <p class="muted" style="font-size:0.8em">
+    Now back on <strong>your laptop</strong> &mdash; a new terminal window, not the robot.
+  </p>
+  <pre class="cmd"><code data-trim data-noescape><span class="p"></span>git clone https://github.com/sjaraza/shinelabs-robot-dashboard.git
+<span class="p"></span>cd shinelabs-robot-dashboard
+<span class="p"></span>python3 launch.py</code></pre>
+  <p class="muted" style="font-size:0.74em">
+    Windows: the last line is <code class="inline">py launch.py</code>.
+    The first run takes about half a minute; after that it starts straight away.
+  </p>
   <div class="checkpoint">
     <strong>Checkpoint 4</strong>
     The dashboard is open, connected, and showing your battery voltage

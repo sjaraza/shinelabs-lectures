@@ -42,6 +42,9 @@ driving. Do not cut the battery-care slide.
 - [ ] Check `ssh -V` works in their terminal. macOS and Linux always do; Windows
       10/11 normally does, but an old build may need OpenSSH Client adding from
       Settings → System → Optional features
+- [ ] Optional but a big time-saver: clone the console repo and run
+      `python3 launch.py --check` at home, so the venv and paramiko are already
+      in place before the session
 
 **Bring:**
 
@@ -73,8 +76,7 @@ driving. Do not cut the battery-care slide.
 | "Introduction" slide | instructor bio |
 | `assets/dashboard.png` | screenshot of the finished dashboard |
 | 5 GHz SSID | laptop network name |
-| Setup script command | once the provisioning script exists |
-| Clone + run commands | once the dashboard exists |
+*(the setup-script and console commands are now filled in)*
 
 ## Things that will go wrong, and the answer
 
