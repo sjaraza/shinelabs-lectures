@@ -88,11 +88,11 @@ Kept here rather than in the README, which students read.
   tree was removed as it contains only TypeScript). No CDN links, no web fonts.
 - **No credentials, ever.** This repo is public. Wi-Fi passwords go on the board.
   No student names, no photographs of minors.
-- **Rotate the Slack invite when the series ends.** `assets/slack-qr.png`
-  encodes a shared-invite URL and this repo is public, so the link is
-  scrapeable — a QR is trivially decodable and offers no protection. Slack →
-  Manage members → invite links → revoke and regenerate. Do the same if the
-  deck is ever published via GitHub Pages, which makes it a public web page.
+- **Turn off Slack invites after lecture 0.** `assets/slack-qr.png` encodes a
+  shared-invite URL, this repo is public, and a QR is trivially decodable — so
+  the link is scrapeable for as long as it is live. Everyone who needs it will
+  have joined in the first session. Slack → Manage members → invite links →
+  revoke. Post-lecture-0 joiners can be invited by email instead.
 - **Placeholders render as loud amber boxes** so an unfilled slot is obvious in
   rehearsal rather than on the day. Grep for `placeholder` to find them all.
 - **Print to PDF** by appending `?print-pdf` to a deck URL, then print from the
