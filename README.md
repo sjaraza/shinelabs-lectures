@@ -1,6 +1,6 @@
 # ShineLabs Robotics
 
-Slides for our four-part robotics series. Everything we cover in class is here,
+Slides for our robotics series. Everything we cover in class is here,
 so you can go back over it later.
 
 ## The lectures
