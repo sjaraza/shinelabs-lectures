@@ -21,8 +21,8 @@ internet at all.
 
 | Key | Does |
 |---|---|
-| `→` `←` | next / previous topic |
-| `↓` `↑` | move within a topic |
+| `→` or `Space` | next slide |
+| `←` | previous slide |
 | `Esc` | see all the slides at once |
 | `F` | fullscreen |
 

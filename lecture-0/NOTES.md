@@ -3,57 +3,65 @@
 90 minutes, 20 students, one robot and one laptop each. Deliberately
 hands-on: the slides are a spine, not the content.
 
-Students image their own SD cards in this session, which is the single longest
-segment. Timings below reflect that.
+Students image their SD card **at home, before the session**. The deck carries
+the full instructions plus a QR anyway, as a catch-up path for anyone who
+didn't — that is what the 0:24 block is for.
 
 | Time | Segment | Mode | Ends with |
 |---|---|---|---|
 | 0:00–0:08 | Welcome, intro, series arc, Slack | slides | everyone in Slack |
 | 0:08–0:18 | Meet the hardware — "how many sensors can you find?" | robot in hand | can point at each part |
 | 0:18–0:24 | The robot network + label your robot | slides + stickers | every robot labelled |
-| 0:24–0:50 | **Image the SD card** and boot | hands-on | **CP1** — `ping robotN.local` replies |
-| 0:50–0:58 | SSH in | hands-on | **CP2** — prompt is `you@robotN` |
-| 0:58–1:08 | Run the setup script | hands-on | **CP3** — script prints `READY` |
-| 1:08–1:16 | Dashboard: clone, run, connect | hands-on | **CP4** — battery + distance live |
-| 1:16–1:24 | Drive it | hands-on, on the floor | **CP5** — forward, turn, return, stop |
-| 1:24–1:28 | Aim camera, capture | hands-on | **CP6** — a photo on screen |
-| 1:28–1:30 | Battery care, pack down, next time | slides | batteries collected |
+| 0:24–0:34 | Imaging **catch-up** + boot | hands-on | **CP1** — `ping <name>.local` replies |
+| 0:34–0:40 | Terminal + SSH client on the laptop | hands-on | `ssh -V` prints a version |
+| 0:40–0:48 | SSH in | hands-on | **CP2** — prompt is `you@<name>` |
+| 0:48–0:58 | Run the setup script | hands-on | **CP3** — script prints `READY` |
+| 0:58–1:08 | Dashboard: clone, run, connect | hands-on | **CP4** — battery + distance live |
+| 1:08–1:18 | Drive it | hands-on, on the floor | **CP5** — forward, turn, return, stop |
+| 1:18–1:25 | Aim camera, capture | hands-on | **CP6** — a photo on screen |
+| 1:25–1:30 | Battery care, pack down, next time | slides | batteries collected |
 
 Checkpoints exist so the room can be scanned at a glance. Don't move on until
 most of the room is at the same place; park stragglers with a neighbour who is
 already through.
 
-⚠️ **Imaging is the long pole and it will overrun for someone.** If you are past
-1:20 and still fighting cards, cut CP5 and CP6 and open lecture 1 with driving —
-what matters is that every robot is built, imaged and reachable. Do not cut the
-battery-care slide.
+⚠️ **If several students arrive without an imaged card, the 0:24 block will
+overrun.** Hand those students a spare pre-imaged card rather than letting the
+room wait — the point of today is a working robot, not the imaging exercise. If
+you are past 1:15 and still catching up, cut CP5 and CP6 and open lecture 1 with
+driving. Do not cut the battery-care slide.
 
 ## Before the session
 
-**Materials — students image their own cards, so each student needs:**
+**Tell students to do this at home, and chase it:**
 
-- [ ] microSD card, **16 GB or larger**
-- [ ] a **card reader** — many laptops have no SD slot, and this is the item
-      most likely to be forgotten
-- [ ] **Raspberry Pi Imager already installed** on their laptop. Ask them to do
-      this before arriving: it is a ~150 MB download, and twenty of them at once
-      over one uplink is a slow start to the session.
-- [ ] a sticker and a marker, for labelling the robot
-- [ ] 2–3 **spare pre-imaged cards** in your bag, for cards that fail or
-      students who get hopelessly stuck
+- [ ] Choose a robot name and image their SD card following the guide on slide
+      13 — the hostname must match the name on their sticker
+- [ ] Install **Raspberry Pi Imager** (~150 MB — a bad thing to download twenty
+      times over one uplink on the day)
+- [ ] Check `ssh -V` works in their terminal. macOS and Linux always do; Windows
+      10/11 normally does, but an old build may need OpenSSH Client adding from
+      Settings → System → Optional features
+
+**Bring:**
+
+- [ ] 2–3 **spare pre-imaged cards** for students who arrive without one
+- [ ] Spare microSD cards and a **card reader** — many laptops have no SD slot
+- [ ] Stickers and a marker, for labelling robots
+- [ ] Two or three spare charged battery packs
 
 **Setup:**
 
 - [ ] Router: **Smart Connect off**, separate SSIDs — robots on 2.4 GHz
       (`ShineLabs`), laptops on 5 GHz. A Pi Zero 2 W is 2.4 GHz only, and 40
       clients on one band will hurt.
-- [ ] Robot numbers assigned per student — hand them out rather than letting
-      students pick, or you will get two `robot0`s
+- [ ] A **roster sheet** to write student → robot name on as they choose. Names
+      are creative and unpredictable now, so this is the only record of which
+      robot belongs to whom — you will need it all series
 - [ ] Batteries charged. Two LEDs lit on every pack before students arrive.
-- [ ] Two or three spare charged packs within reach
 - [ ] Gateway laptop up, `./scripts/status.sh` reports READY (see `slab-gw`)
 - [ ] Wi-Fi name and password written on the board — **not** on a slide, since
-      the deck is in a public repo. Students type these into Imager.
+      the deck is in a public repo. Students need these for Imager.
 - [ ] Slack QR scans from the back of the room (test it on the projector, not
       just on screen)
 - [ ] Rehearse once end-to-end on one robot; every placeholder filled
@@ -73,11 +81,12 @@ battery-care slide.
 | Symptom | Cause | Fix |
 |---|---|---|
 | Imager never showed a customisation step | they clicked SKIP CUSTOMISATION | rewrite the card — without it there is no hostname, no Wi-Fi and no SSH |
-| `ping robotN.local` fails | wrong Wi-Fi details entered in Imager | check hostname spelling first, then rewrite the card |
+| `ping <name>.local` fails | wrong Wi-Fi details entered in Imager | check hostname spelling first, then rewrite the card |
 | First boot seems to hang | filesystem expansion + Wi-Fi join | give it two minutes before declaring it broken |
 | `ssh` asks for a password they don't know | they forgot what they typed in Imager | this is why the slide says write it down; otherwise rewrite the card |
-| `ssh` refuses with a host-key warning | card rewritten, same hostname | on their laptop: `ssh-keygen -R robotN.local` |
-| Two students both chose `robot0` | numbers not handed out | rename one: `sudo hostnamectl set-hostname robotN`, reboot |
+| `ssh` refuses with a host-key warning | card rewritten, same hostname | on their laptop: `ssh-keygen -R <name>.local` |
+| Two robots share a name | duplicate not caught when chosen | rename one: `sudo hostnamectl set-hostname <newname>`, reboot, update the roster |
+| Hostname rejected or `.local` never resolves | illegal name — spaces, capitals, underscores, emoji | lower case, letters/digits/hyphens only, no leading or trailing hyphen |
 | Robot boots then dies | flat pack | swap to a spare, hand the flat one in |
 | Servos twitch on first connect | `Picarx()` centres them on init | expected, not a fault |
 | Robot pulls to one side when driving | uncalibrated | expected — it's lecture 1's opening problem |
@@ -97,7 +106,8 @@ battery-care slide.
 
 - `S` opens speaker notes in a second window — every slide has them
 - `Esc` for the slide overview, `F` for fullscreen
-- Arrow keys: left/right moves between segments, up/down within a segment
+- Left/right (or space) moves through every slide — the deck is flat, so there
+  are no vertical stacks and up/down do nothing
 - Works fully offline; reveal.js is vendored in `vendor/reveal.js`
 
 ## Repo notes (instructor)
