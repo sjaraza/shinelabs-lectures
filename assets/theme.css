@@ -1,0 +1,126 @@
+/* ShineLabs lecture theme — layered on top of reveal.js's black theme.
+ *
+ * Designed for a classroom projector, not a laptop screen. The governing
+ * constraint: a student at the back of the room has to be able to read a
+ * command off the slide and type it correctly. That means commands are set
+ * large, in monospace, on high contrast, and are never wrapped.
+ */
+
+:root {
+  --sl-bg: #12141a;
+  --sl-panel: #1b1f28;
+  --sl-line: #2c323f;
+  --sl-text: #e8ebf1;
+  --sl-muted: #98a1b3;
+  --sl-accent: #56b6f0;
+  --sl-ok: #4ec9a5;
+  --sl-warn: #e8b93f;
+  --sl-bad: #f0716f;
+  --sl-mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+.reveal-viewport { background: var(--sl-bg); }
+.reveal { color: var(--sl-text); font-size: 34px; }
+
+.reveal h1 { font-size: 2.1em; letter-spacing: -0.02em; }
+.reveal h2 { font-size: 1.5em; letter-spacing: -0.01em; }
+.reveal h3 { font-size: 1.15em; color: var(--sl-accent); font-weight: 600; }
+.reveal h1, .reveal h2, .reveal h3 { text-transform: none; text-shadow: none; }
+
+.reveal section { text-align: left; }
+.reveal section.center { text-align: center; }
+
+/* --- commands students type --------------------------------------------- */
+/* Big, unwrapped, and visually distinct from prose. The $ is inserted with
+ * ::before so students can't accidentally copy it into their terminal. */
+.reveal pre.cmd {
+  width: 100%;
+  box-shadow: none;
+  background: #0b0d12;
+  border: 1px solid var(--sl-line);
+  border-left: 4px solid var(--sl-accent);
+  border-radius: 6px;
+  margin: 0.6em 0;
+  padding: 0.7em 0.9em;
+  font-size: 0.72em;
+}
+.reveal pre.cmd code {
+  font-family: var(--sl-mono);
+  color: #dbe3ef;
+  white-space: pre;
+  overflow-x: auto;
+  padding: 0;
+  max-height: none;
+  line-height: 1.5;
+}
+.reveal pre.cmd code .p::before { content: "$ "; color: var(--sl-muted); }
+.reveal code.inline {
+  font-family: var(--sl-mono);
+  background: #0b0d12;
+  border: 1px solid var(--sl-line);
+  border-radius: 4px;
+  padding: 0.06em 0.35em;
+  font-size: 0.85em;
+  color: var(--sl-accent);
+}
+
+/* --- checkpoints -------------------------------------------------------- */
+/* Every hands-on segment ends in one of these. They exist so the room can be
+ * scanned at a glance: everyone should be able to point at the same thing. */
+.reveal .checkpoint {
+  background: #10251e;
+  border: 1px solid #27543f;
+  border-left: 4px solid var(--sl-ok);
+  border-radius: 6px;
+  padding: 0.6em 0.9em;
+  margin-top: 0.7em;
+}
+.reveal .checkpoint strong { color: var(--sl-ok); display: block; margin-bottom: 0.15em; }
+
+.reveal .warn {
+  background: #261f10;
+  border: 1px solid #574421;
+  border-left: 4px solid var(--sl-warn);
+  border-radius: 6px;
+  padding: 0.6em 0.9em;
+  margin-top: 0.7em;
+}
+.reveal .warn strong { color: var(--sl-warn); display: block; margin-bottom: 0.15em; }
+
+/* --- hardware spec tables ---------------------------------------------- */
+.reveal table.spec { font-size: 0.72em; border-collapse: collapse; width: 100%; }
+.reveal table.spec th {
+  text-align: left; color: var(--sl-muted); font-weight: 600;
+  font-size: 0.85em; letter-spacing: 0.06em; text-transform: uppercase;
+  border-bottom: 1px solid var(--sl-line); padding: 0.3em 0.8em 0.3em 0;
+}
+.reveal table.spec td { padding: 0.32em 0.8em 0.32em 0; border-bottom: 1px solid #20242e; }
+.reveal table.spec td:first-child { color: var(--sl-muted); white-space: nowrap; }
+.reveal table.spec code { font-family: var(--sl-mono); color: var(--sl-accent); font-size: 0.9em; }
+
+/* --- misc --------------------------------------------------------------- */
+.reveal .muted { color: var(--sl-muted); }
+.reveal .lead { font-size: 1.15em; line-height: 1.45; }
+.reveal ul { margin-left: 1em; }
+.reveal li { margin-bottom: 0.35em; }
+.reveal .cols { display: flex; gap: 1.6em; align-items: flex-start; }
+.reveal .cols > * { flex: 1; min-width: 0; }
+
+/* Placeholder box for artwork that has not been added yet. Deliberately ugly
+ * so an unfilled slot is obvious in rehearsal rather than on the day. */
+.reveal .placeholder {
+  border: 2px dashed var(--sl-warn);
+  border-radius: 8px;
+  color: var(--sl-warn);
+  padding: 1.4em;
+  text-align: center;
+  font-family: var(--sl-mono);
+  font-size: 0.8em;
+  background: rgba(232, 185, 63, 0.05);
+}
+
+.reveal .timing {
+  position: fixed; bottom: 12px; right: 18px;
+  font-family: var(--sl-mono); font-size: 14px; color: #333a47;
+}
+.reveal .progress { color: var(--sl-accent); }

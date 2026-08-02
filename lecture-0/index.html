@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 0 — Getting to Know Your Robot</title>
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/theme/black.css" id="theme">
+<link rel="stylesheet" href="../vendor/reveal.js/plugin/highlight/monokai.css">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ==================================================================== -->
+<!-- 0:00 – 0:08   Welcome                                                 -->
+<!-- ==================================================================== -->
+
+<section class="center" data-state="title">
+  <h1>Getting to Know Your Robot</h1>
+  <p class="lead muted">Lecture 0 &middot; ShineLabs Robotics</p>
+  <p class="muted" style="font-size:0.7em">A four-part summer series</p>
+  <aside class="notes">
+    Doors-open slide. Leave it up while students settle and find a seat with
+    their robot. Do not start the hardware tour until everyone has a robot and
+    a laptop in front of them.
+  </aside>
+</section>
+
+<section>
+  <h2>Introduction</h2>
+  <div class="placeholder">
+    PLACEHOLDER — instructor introduction<br><br>
+    who I am &middot; what I do &middot; why I volunteered to teach this
+  </div>
+  <aside class="notes">
+    Keep this short — two minutes. The robots are on the desks and nobody is
+    listening properly until they have touched one.
+  </aside>
+</section>
+
+<section>
+  <h2>Where we're going</h2>
+  <table class="spec">
+    <tr><td><strong>Lecture 0</strong></td><td>Getting familiar with the kit &mdash; today</td></tr>
+    <tr><td><strong>Lecture 1</strong></td><td>Using sensors to make decisions &middot; basic computer vision &middot; controlling a wheeled robot efficiently</td></tr>
+    <tr><td><strong>Lecture 2</strong></td><td>Image processing and CV fundamentals &middot; a touch of ROS</td></tr>
+    <tr><td><strong>Lecture 3</strong></td><td>Trying out autonomy &mdash; intro to SLAM with ultrasonic and camera</td></tr>
+  </table>
+  <p class="muted" style="font-size:0.8em; margin-top:0.8em">
+    Today is setup and orientation. By the end of it your robot moves, senses,
+    and takes a picture &mdash; and you drove it.
+  </p>
+  <aside class="notes">
+    Set the expectation that today is deliberately the least glamorous session.
+    The pay-off is that lectures 1–3 start from a working robot.
+  </aside>
+</section>
+
+<section>
+  <h2>Stay in touch</h2>
+  <div class="cols">
+    <div>
+      <h3>Slack</h3>
+      <p class="muted" style="font-size:0.8em">
+        Everything lives here &mdash; repository links, slides, notes,
+        and somewhere to ask questions between sessions.
+      </p>
+    </div>
+    <div class="placeholder">
+      PLACEHOLDER<br>Slack workspace QR code<br><br>
+      <span style="font-size:0.85em">assets/slack-qr.png</span>
+    </div>
+  </div>
+  <aside class="notes">
+    Get everyone into Slack now rather than at the end — you will use it later
+    in this session to hand out the repository link, and it is much easier
+    while everyone is still sitting still.
+  </aside>
+</section>
+
+<!-- ==================================================================== -->
+<!-- 0:08 – 0:20   Meet the hardware                                       -->
+<!-- ==================================================================== -->
+
+<section>
+  <section>
+    <h2>Meet your robot</h2>
+    <p class="lead">Pick it up. Turn it over. Find each of these.</p>
+    <div class="placeholder">
+      PLACEHOLDER — annotated photo of the assembled PiCar-X<br>
+      <span style="font-size:0.85em">assets/robot-annotated.png</span>
+    </div>
+    <aside class="notes">
+      Physical segment. Walk the room. The goal is that every student can point
+      at the compute, the brain-board, the two drive motors, three servos, and
+      the three sensors before anyone touches a keyboard.
+    </aside>
+  </section>
+
+  <section>
+    <h3>The computer</h3>
+    <table class="spec">
+      <tr><th>Part</th><th>What it is</th></tr>
+      <tr><td>Raspberry Pi Zero 2 W</td><td>4 cores, 512&nbsp;MB RAM &mdash; a whole Linux computer smaller than a credit card</td></tr>
+      <tr><td>Wi-Fi</td><td>2.4&nbsp;GHz only. This is why the robots and your laptops use different networks</td></tr>
+      <tr><td>OS</td><td>Debian 13 &ldquo;trixie&rdquo;, Python 3.13</td></tr>
+      <tr><td>Storage</td><td>The microSD card <em>is</em> the hard drive</td></tr>
+    </table>
+    <div class="warn">
+      <strong>512 MB of RAM</strong>
+      That is roughly one-thirtieth of a modern laptop. It shapes everything we
+      do &mdash; and it is a real engineering constraint, not a toy one.
+    </div>
+    <aside class="notes">
+      Worth dwelling on the RAM figure. It explains later design decisions,
+      like why the dashboard fetches a single photo instead of streaming video.
+    </aside>
+  </section>
+
+  <section>
+    <h3>The brain-board: Robot HAT v4</h3>
+    <p class="muted" style="font-size:0.8em">The Pi has no analogue inputs and cannot drive a motor. This board adds both.</p>
+    <table class="spec">
+      <tr><th>Provides</th><th>Detail</th></tr>
+      <tr><td>Motor driver</td><td>2 channels &mdash; direction pin + speed (PWM) each</td></tr>
+      <tr><td>Servo outputs</td><td>12 channels; we use <code>P0 P1 P2</code></td></tr>
+      <tr><td>Analogue inputs</td><td><code>A0&ndash;A3</code>, 12-bit &mdash; the Pi alone has none</td></tr>
+      <tr><td>Battery sensing</td><td><code>A4</code>, wired internally to the pack</td></tr>
+      <tr><td>Speaker</td><td>Mono, over I&sup2;S</td></tr>
+    </table>
+    <aside class="notes">
+      The useful idea here: a microcontroller is good at precise timing and
+      analogue, a Linux computer is good at everything else. Real robots layer
+      them exactly like this.
+    </aside>
+  </section>
+
+  <section>
+    <h3>What moves</h3>
+    <table class="spec">
+      <tr><th>Actuator</th><th>Range</th><th>Job</th></tr>
+      <tr><td>2 &times; drive motors</td><td>&minus;100 &hellip; +100</td><td>rear wheels, forward and back</td></tr>
+      <tr><td>Steering servo</td><td><code>&plusmn;30&deg;</code></td><td>front wheels</td></tr>
+      <tr><td>Camera pan servo</td><td><code>&plusmn;90&deg;</code></td><td>look left and right</td></tr>
+      <tr><td>Camera tilt servo</td><td><code>&minus;35&deg; &hellip; +65&deg;</code></td><td>look up and down</td></tr>
+    </table>
+    <p class="muted" style="font-size:0.78em; margin-top:0.6em">
+      Steering only reaches &plusmn;30&deg;, not &plusmn;90&deg;. Ask it to turn further and
+      it simply won't &mdash; a limit written into the software to protect the linkage.
+    </p>
+    <aside class="notes">
+      Good moment to ask why a steering servo would be deliberately limited in
+      software. Answer: because the mechanical linkage binds beyond that, and
+      stalling a servo draws current and cooks it.
+    </aside>
+  </section>
+
+  <section>
+    <h3>What senses</h3>
+    <table class="spec">
+      <tr><th>Sensor</th><th>Reads</th><th>Used for</th></tr>
+      <tr><td>Ultrasonic</td><td>distance in cm</td><td>&ldquo;is something in front of me?&rdquo;</td></tr>
+      <tr><td>Grayscale &times;3</td><td>3 &times; brightness, 0&ndash;4095</td><td>following a line, spotting a cliff edge</td></tr>
+      <tr><td>Camera (ov5647)</td><td>5&nbsp;MP stills</td><td>everything in lectures 2 and 3</td></tr>
+    </table>
+    <div class="warn">
+      <strong>Sensors lie</strong>
+      The ultrasonic returns <code class="inline">-1</code> when it hears nothing back &mdash; not
+      &ldquo;minus one centimetre&rdquo;. Handling that honestly is most of what
+      robotics software actually is.
+    </div>
+    <aside class="notes">
+      This is the single most important idea in the whole session. Every sensor
+      has a failure mode, and pretending otherwise is how robots drive into
+      walls. It sets up lecture 1 directly.
+    </aside>
+  </section>
+</section>
+
+<!-- ==================================================================== -->
+<!-- Battery care                                                          -->
+<!-- ==================================================================== -->
+
+<section>
+  <h2>Looking after the battery</h2>
+  <div class="cols">
+    <div>
+      <table class="spec">
+        <tr><td>Pack</td><td>2 &times; 18650 Li-ion, 2000&nbsp;mAh</td></tr>
+        <tr><td>Full</td><td>8.4&nbsp;V</td></tr>
+        <tr><td>Protection cutoff</td><td>6.0&nbsp;V</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>The two LEDs tell you everything</h3>
+      <table class="spec">
+        <tr><td><span style="color:var(--sl-ok)">&#9679;&#9679;</span> both lit</td><td>above 7.6&nbsp;V &mdash; fine</td></tr>
+        <tr><td><span style="color:var(--sl-warn)">&#9679;</span> one lit</td><td>above 7.15&nbsp;V &mdash; finish up</td></tr>
+        <tr><td><span style="color:var(--sl-bad)">&#9675;</span> none lit</td><td>stop and charge</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="warn">
+    <strong>Never run it flat</strong>
+    Draining a lithium pack below its cutoff damages it permanently. If both
+    LEDs are out, put the robot down and tell me &mdash; don't push on.
+  </div>
+  <aside class="notes">
+    Say this early and mean it. Batteries are charged between sessions; a pack
+    murdered in lecture 0 is a robot missing from lecture 1.
+  </aside>
+</section>
+
+<!-- ==================================================================== -->
+<!-- 0:20 – 0:28   How it gets on the network + imaging demo                -->
+<!-- ==================================================================== -->
+
+<section>
+  <section>
+    <h2>How your robot gets online</h2>
+    <p class="lead">There is a private Wi-Fi network in this room.</p>
+    <table class="spec">
+      <tr><td>Robots join</td><td><code>ShineLabs</code> &mdash; 2.4&nbsp;GHz</td></tr>
+      <tr><td>Your laptop joins</td><td><code>PLACEHOLDER &mdash; 5&nbsp;GHz SSID</code></td></tr>
+      <tr><td>Passwords</td><td>on the board &mdash; not in the slides</td></tr>
+    </table>
+    <p class="muted" style="font-size:0.78em; margin-top:0.7em">
+      Both networks are the same network underneath, so your laptop can reach
+      your robot. Robots get the 2.4&nbsp;GHz band to themselves because that is
+      all a Pi Zero 2 W can use.
+    </p>
+    <aside class="notes">
+      Deliberately do NOT explain how the network is built. It is not today's
+      lesson and it invites twenty tangents. "There is a network, here is how
+      you join it" is enough.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Your robot already has an SD card &mdash; here's what's on it</h3>
+    <p class="muted" style="font-size:0.82em">Watch. You don't need to do this today.</p>
+    <ul style="font-size:0.85em">
+      <li>Raspberry Pi OS written to the card with <strong>Raspberry Pi Imager</strong></li>
+      <li>Hostname set per robot &mdash; <code class="inline">robot0</code>, <code class="inline">robot1</code>, &hellip;</li>
+      <li>Wi-Fi network and country pre-configured</li>
+      <li><strong>SSH enabled</strong> &mdash; without this, nothing today would work</li>
+    </ul>
+    <div class="placeholder">
+      PLACEHOLDER &mdash; screenshot of Imager's OS-customisation dialogue<br>
+      <span style="font-size:0.85em">assets/imager-customise.png</span>
+    </div>
+    <aside class="notes">
+      Projector demo only, five minutes. Twenty students imaging cards live
+      would consume the session. Show the customisation dialogue in particular —
+      hostname, user, Wi-Fi, enable SSH — because that is the interesting part.
+    </aside>
+  </section>
+</section>
+
+<!-- ==================================================================== -->
+<!-- 0:28 – 0:45   First contact                                           -->
+<!-- ==================================================================== -->
+
+<section>
+  <section>
+    <h2>First contact</h2>
+    <p class="lead">Power on. Find it. Log in.</p>
+    <ol style="font-size:0.9em">
+      <li>Flip the switch on the Robot HAT</li>
+      <li>Wait for the LEDs &mdash; give it about 40 seconds to boot</li>
+      <li>Check the label on your robot for its name</li>
+    </ol>
+    <aside class="notes">
+      Expect the first real stall here: robots that were not switched on, or
+      whose battery is flat. Have a couple of charged spare packs to hand.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Say hello</h3>
+    <p class="muted" style="font-size:0.8em">Replace <code class="inline">0</code> with your robot's number.</p>
+    <pre class="cmd"><code data-trim data-noescape><span class="p"></span>ping robot0.local</code></pre>
+    <pre class="cmd"><code data-trim data-noescape><span class="p"></span>ssh ali@robot0.local</code></pre>
+    <div class="checkpoint">
+      <strong>Checkpoint 1</strong>
+      Your prompt says <code class="inline">ali@robot0</code>. You are now typing
+      on the robot, not on your laptop.
+    </div>
+    <aside class="notes">
+      Make the shift explicit — students routinely lose track of which machine
+      they are typing on for the rest of the session. Ask them to run `hostname`
+      to prove it. Scan the room before moving on.
+    </aside>
+  </section>
+
+  <section>
+    <h3>What is SSH, actually?</h3>
+    <div class="cols">
+      <div>
+        <p style="font-size:0.85em">
+          An encrypted remote shell. You type on your laptop; the commands run
+          on the robot; the output comes back.
+        </p>
+        <p class="muted" style="font-size:0.8em">
+          It is how nearly every server on the internet is administered, and it
+          is the same tool professionals use daily.
+        </p>
+      </div>
+      <div>
+        <pre class="cmd"><code data-trim data-noescape><span class="p"></span>hostname
+robot0
+<span class="p"></span>uptime
+ up 3 min
+<span class="p"></span>exit</code></pre>
+      </div>
+    </div>
+    <aside class="notes">
+      Worth thirty seconds. It demystifies the thing they will use all series,
+      and "this is what real engineers use" lands well with this age group.
+    </aside>
+  </section>
+</section>
+
+<!-- ==================================================================== -->
+<!-- Setup script                                                          -->
+<!-- ==================================================================== -->
+
+<section>
+  <section>
+    <h2>Set up the robot's software</h2>
+    <p class="muted" style="font-size:0.82em">One script. Run it on the robot, over SSH.</p>
+    <pre class="cmd"><code data-trim data-noescape><span class="p"></span>PLACEHOLDER &mdash; setup script command</code></pre>
+    <div class="checkpoint">
+      <strong>Checkpoint 2</strong>
+      The script finishes with <code class="inline">READY</code> and a summary. Show me your screen.
+    </div>
+    <aside class="notes">
+      TODO: fill in once the provisioning script exists in
+      shinelabs-robot-dashboard. It prints each step as it goes so students can
+      see the real sequence, and it is safe to re-run if Wi-Fi drops.
+    </aside>
+  </section>
+
+  <section>
+    <h3>What that script just did</h3>
+    <ul style="font-size:0.8em">
+      <li>Updated the system packages</li>
+      <li>Installed <code class="inline">robot-hat</code> &mdash; talks to the brain-board</li>
+      <li>Installed <code class="inline">vilib</code> &mdash; camera and vision, for later lectures</li>
+      <li>Installed <code class="inline">picar-x</code> &mdash; the robot itself: motors, servos, sensors</li>
+      <li>Set up the speaker</li>
+      <li>Created the robot's calibration file</li>
+    </ul>
+    <p class="muted" style="font-size:0.78em">
+      You could have typed every one of those commands by hand. Scripts exist so
+      that twenty people get an identical result.
+    </p>
+    <aside class="notes">
+      The point to make: automation is not laziness, it is reproducibility.
+      Same reason we use version control.
+    </aside>
+  </section>
+</section>
+
+<!-- ==================================================================== -->
+<!-- 0:45 – 1:02   Dashboard                                               -->
+<!-- ==================================================================== -->
+
+<section>
+  <section>
+    <h2>The Robot Dashboard</h2>
+    <p class="lead">Runs on <em>your laptop</em>. Talks to your robot over SSH.</p>
+    <div class="placeholder">
+      PLACEHOLDER &mdash; screenshot of the dashboard<br>
+      <span style="font-size:0.85em">assets/dashboard.png</span>
+    </div>
+    <aside class="notes">
+      Emphasise the split: the robot does the robot things, the laptop does the
+      screen. Same architecture as a ground station for a drone.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Get it and run it</h3>
+    <pre class="cmd"><code data-trim data-noescape><span class="p"></span>PLACEHOLDER &mdash; clone command</code></pre>
+    <pre class="cmd"><code data-trim data-noescape><span class="p"></span>PLACEHOLDER &mdash; run command</code></pre>
+    <div class="checkpoint">
+      <strong>Checkpoint 3</strong>
+      The dashboard is open, connected, and showing your battery voltage
+      and a live distance reading.
+    </div>
+    <aside class="notes">
+      TODO: fill in once the GUI exists. Repository link goes in Slack rather
+      than being read out.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Read your robot's vitals</h3>
+    <table class="spec">
+      <tr><th>Reading</th><th>What it tells you</th></tr>
+      <tr><td>Battery voltage</td><td>how much driving you have left</td></tr>
+      <tr><td>CPU temperature</td><td>whether it is working hard or overheating</td></tr>
+      <tr><td>Wi-Fi signal</td><td>closer to 0 is better; &minus;38&nbsp;dBm is excellent</td></tr>
+      <tr><td>Distance</td><td>centimetres to the nearest object, or <code>-1</code></td></tr>
+      <tr><td>Grayscale &times;3</td><td>0&ndash;4095 per sensor &mdash; darker surface, lower number</td></tr>
+    </table>
+    <p class="muted" style="font-size:0.78em">
+      Wave your hand in front of the ultrasonic sensor and watch the number move.
+      Then cover it completely and watch what happens.
+    </p>
+    <aside class="notes">
+      The "cover it completely" experiment is the point — they will see -1 and
+      understand viscerally why sensor error handling matters. Let them discover
+      it rather than telling them.
+    </aside>
+  </section>
+</section>
+
+<!-- ==================================================================== -->
+<!-- 1:02 – 1:20   Drive it                                                -->
+<!-- ==================================================================== -->
+
+<section>
+  <section>
+    <h2>Drive it</h2>
+    <div class="warn">
+      <strong>Before you touch the controls</strong>
+      Robot on the floor, not the desk. Wheels clear. Nothing in front of it.
+      A robot that drives off a table lands on its camera.
+    </div>
+    <aside class="notes">
+      Enforce this properly — pause until every robot is on the floor. Twenty
+      students, twenty first-time drivers, and desks are exactly 75 cm high.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Steering and speed</h3>
+    <p class="muted" style="font-size:0.8em">
+      Speed goes from 0 straight to about half power &mdash; there is no gentle
+      crawl. That is a property of the motor driver, not a bug in your dashboard.
+    </p>
+    <div class="checkpoint">
+      <strong>Checkpoint 4</strong>
+      Drive forward a metre, turn, and come back. Then stop it.
+    </div>
+    <aside class="notes">
+      The absent slow-speed range is genuinely interesting: the library remaps
+      any non-zero speed to at least 50% duty cycle. Sets up lecture 1's
+      "controlling a wheeled robot efficiently" nicely.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Aim the camera, take a picture</h3>
+    <ol style="font-size:0.88em">
+      <li>Pan and tilt until the camera points where you want</li>
+      <li>Press <strong>Capture</strong></li>
+      <li>Wait &mdash; it takes a second or two to expose properly</li>
+    </ol>
+    <div class="checkpoint">
+      <strong>Checkpoint 5</strong>
+      A photograph, taken by your robot, on your screen.
+    </div>
+    <p class="muted" style="font-size:0.78em">
+      A single still, not video. On 512&nbsp;MB of RAM, streaming video would cost
+      more than it is worth &mdash; an engineering trade-off, made on purpose.
+    </p>
+    <aside class="notes">
+      Good closing activity: it is visual, it is shareable, and it is a natural
+      hook into lecture 2. Encourage them to post pictures in Slack.
+    </aside>
+  </section>
+</section>
+
+<!-- ==================================================================== -->
+<!-- 1:20 – 1:30   Wrap                                                    -->
+<!-- ==================================================================== -->
+
+<section>
+  <section>
+    <h2>Before you go</h2>
+    <ul style="font-size:0.88em">
+      <li>Switch the robot <strong>off</strong> at the Robot HAT</li>
+      <li>Hand the battery in to be charged</li>
+      <li>Leave the SD card in the robot</li>
+      <li>Post your photo in Slack</li>
+    </ul>
+    <aside class="notes">
+      Collect batteries yourself rather than trusting twenty teenagers to
+      remember. Charging happens between sessions.
+    </aside>
+  </section>
+
+  <section class="center">
+    <h2>Next time</h2>
+    <p class="lead">Using sensors to make decisions</p>
+    <p class="muted" style="font-size:0.85em">
+      Your robot can already see a wall. Next we make it decide what to do
+      about it &mdash; and find out why it doesn't drive in a straight line.
+    </p>
+    <aside class="notes">
+      The straight-line tease is real: the robots are uncalibrated, so they
+      pull to one side. Calibration opens lecture 1 as a motivated problem
+      rather than a chore.
+    </aside>
+  </section>
+</section>
+
+</div></div>
+
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../vendor/reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    controls: true,
+    progress: true,
+    // Vertical stacks group a segment's slides, so left/right moves between
+    // segments and up/down moves within one. Useful when a question sends you
+    // back mid-segment.
+    navigationMode: 'default',
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    width: 1280,
+    height: 720,
+    margin: 0.06,
+    plugins: [RevealNotes, RevealHighlight],
+  });
+</script>
+</body>
+</html>
